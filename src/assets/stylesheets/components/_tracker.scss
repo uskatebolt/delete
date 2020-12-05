@@ -1,8 +1,8 @@
 .tracker-stats {
 
   color: white;
-  background-color: $black;
-  border-top: solid 1px darken($grey-800, 5);
+  background-color: $blue-grey-900;
+  border-top: solid 1px darken($blue-grey-900, 5);
 
   ul {
     display: grid;
@@ -10,7 +10,6 @@
     list-style: none;
     padding: 0;
     margin: 0;
-
   }
 
 }
@@ -19,12 +18,13 @@
 
   font-size: 2em;
   text-align: center;
-      padding: .5em;
-
+  padding: .5em;
+  border-right: solid 1px darken($blue-grey-900, 5);
+  border-bottom: solid 1px darken($blue-grey-900, 5);
 
   strong {
     font-weight: normal;
-    color: $white;
+    color: $blue-grey-300;
   }
 
 }
@@ -54,12 +54,12 @@
 
 .tracker-last-updated {
 
-  color: $white;
-  background-color: $black;
+  color: white;
+  background-color: $blue-grey-900;
   padding: .8em 0;
 
   p {
-    color: $white;
+    color: $blue-grey-300;
     font-size: .8em;
     text-align: center;
     margin: 0;

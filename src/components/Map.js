@@ -14,11 +14,11 @@ const Map = ( props ) => {
 
   useRefEffect({
     ref: mapRef,
-    effect: mapEffect
+    effect: mapEffect,
   });
 
   const services = useMapServices({
-    names: ['OpenStreetMap']
+    names: ['OpenStreetMap'],
   });
   const basemap = services.find(( service ) => service.name === defaultBaseMap );
 
@@ -31,7 +31,7 @@ const Map = ( props ) => {
   if ( !isDomAvailable()) {
     return (
       <div className={mapClassName}>
-        <p className="map-loading">Loading map for Mr. Hoel :-)</p>
+        <p className="map-loading">Loading map...</p>
       </div>
     );
   }
@@ -39,7 +39,7 @@ const Map = ( props ) => {
   const mapSettings = {
     className: 'map-base',
     zoomControl: false,
-    ...rest
+    ...rest,
   };
 
   return (
@@ -57,7 +57,7 @@ Map.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   defaultBaseMap: PropTypes.string,
-  mapEffect: PropTypes.func
+  mapEffect: PropTypes.func,
 };
 
 export default Map;

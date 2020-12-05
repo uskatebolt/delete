@@ -1,5 +1,5 @@
 import React from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import L from 'leaflet';
 
 import { useTracker } from 'hooks';
@@ -11,63 +11,72 @@ import Map from 'components/Map';
 
 const LOCATION = {
   lat: 0,
-  lng: 0
+  lng: 0,
 };
 const CENTER = [LOCATION.lat, LOCATION.lng];
 const DEFAULT_ZOOM = 2;
 
 const IndexPage = () => {
   const { data: stats = {} } = useTracker({
-    api: 'all'
+    api: 'all',
   });
 
   const { data: countries = [] } = useTracker({
-    api: 'countries'
+    api: 'countries',
   });
 
-  const hasCountries = Array.isArray(countries) && countries.length > 0;
+  const hasCountries = Array.isArray( countries ) && countries.length > 0;
 
   const dashboardStats = [
     {
       primary: {
         label: 'Total Cases',
-        value: stats ? commafy(stats?.cases) : ' ¯\_(ツ)_/¯'
+        value: stats ? commafy( stats?.cases ) : '-',
       },
-                               },
-                               {
+      secondary: {
+        label: 'Per 1 Million',
+        value: stats ? commafy( stats?.casesPerOneMillion ) : '-',
+      },
+    },
+    {
       primary: {
         label: 'Total Deaths',
-        value: stats ? commafy(stats?.deaths) : ' ¯\_(ツ)_/¯'
+        value: stats ? commafy( stats?.deaths ) : '-',
       },
-
+      secondary: {
+        label: 'Per 1 Million',
+        value: stats ? commafy( stats?.deathsPerOneMillion ) : '-',
+      },
     },
-      {
+    {
       primary: {
         label: 'Total Tests',
-        value: stats ? commafy(stats?.tests) : ' ¯\_(ツ)_/¯'
+        value: stats ? commafy( stats?.tests ) : '-',
       },
+      secondary: {
+        label: 'Per 1 Million',
+        value: stats ? commafy( stats?.testsPerOneMillion ) : '-',
       },
-
-
+    },
     {
       primary: {
         label: 'Active Cases',
-        value: stats ? commafy(stats?.active) : ' ¯\_(ツ)_/¯'
-      }
+        value: stats ? commafy( stats?.active ) : '-',
+      },
     },
     {
       primary: {
         label: 'Critical Cases',
-        value: stats ? commafy(stats?.critical) : ' ¯\_(ツ)_/¯'
-      }
+        value: stats ? commafy( stats?.critical ) : '-',
+      },
     },
     {
       primary: {
         label: 'Recovered Cases',
-        value: stats ? commafy(stats?.recovered) : ' ¯\_(ツ)_/¯'
-      }
-    }
-  ]
+        value: stats ? commafy( stats?.recovered ) : '-',
+      },
+    },
+  ];
 
   /**
    * mapEffect
@@ -78,14 +87,14 @@ const IndexPage = () => {
   async function mapEffect({ leafletElement: map } = {}) {
     if ( !hasCountries || !map ) return;
 
-    map.eachLayer(layer => {
+    map.eachLayer(( layer ) => {
       if ( layer?.options?.name === 'OpenStreetMap' ) return;
-      map.removeLayer(layer);
+      map.removeLayer( layer );
     });
 
     const geoJson = {
       type: 'FeatureCollection',
-      features: countries.map((country = {}) => {
+      features: countries.map(( country = {}) => {
         const { countryInfo = {} } = country;
         const { lat, long: lng } = countryInfo;
         return {
@@ -95,25 +104,19 @@ const IndexPage = () => {
           },
           geometry: {
             type: 'Point',
-            coordinates: [ lng, lat ]
-          }
-        }
-      })
-    }
+            coordinates: [lng, lat],
+          },
+        };
+      }),
+    };
 
-    const geoJsonLayers = new L.GeoJSON(geoJson, {
-      pointToLayer: (feature = {}, latlng) => {
+    const geoJsonLayers = new L.GeoJSON( geoJson, {
+      pointToLayer: ( feature = {}, latlng ) => {
         const { properties = {} } = feature;
         let updatedFormatted;
         let casesString;
 
-        const {
-          country,
-          updated,
-          cases,
-          deaths,
-          recovered
-        } = properties
+        const { country, updated, cases, deaths, recovered } = properties;
 
         casesString = `${cases}`;
 
@@ -123,7 +126,7 @@ const IndexPage = () => {
           casesString = `${casesString.slice( 0, -3 )}K+`;
         }
         if ( updated ) {
-          updatedFormatted = new Date(updated).toLocaleString();
+          updatedFormatted = new Date( updated ).toLocaleString();
         }
 
         const html = `
@@ -137,28 +140,28 @@ const IndexPage = () => {
                 <li><strong>Last Update:</strong> ${updatedFormatted}</li>
               </ul>
             </span>
-            ${ casesString }
+            ${casesString}
           </span>
         `;
 
         return L.marker( latlng, {
           icon: L.divIcon({
             className: 'icon',
-            html
+            html,
           }),
-          riseOnHover: true
+          riseOnHover: true,
         });
-      }
+      },
     });
 
-    geoJsonLayers.addTo(map)
+    geoJsonLayers.addTo( map );
   }
 
   const mapSettings = {
     center: CENTER,
     defaultBaseMap: 'OpenStreetMap',
     zoom: DEFAULT_ZOOM,
-    mapEffect
+    mapEffect,
   };
 
   return (
@@ -171,7 +174,7 @@ const IndexPage = () => {
         <Map {...mapSettings} />
         <div className="tracker-stats">
           <ul>
-            { dashboardStats.map(({ primary = {}, secondary = {} }, i) => {
+            { dashboardStats.map(({ primary = {}, secondary = {} }, i ) => {
               return (
                 <li key={`Stat-${i}`} className="tracker-stat">
                   { primary.value && (
@@ -179,26 +182,31 @@ const IndexPage = () => {
                       { primary.value }
                       <strong>{ primary.label }</strong>
                     </p>
-                  )}
+                  ) }
                   { secondary.value && (
                     <p className="tracker-stat-secondary">
                       { secondary.value }
                       <strong>{ secondary.label }</strong>
                     </p>
-                  )}
+                  ) }
                 </li>
               );
-            })}
+            }) }
           </ul>
         </div>
         <div className="tracker-last-updated">
-          <p>
-            Last Updated: { stats ? friendlyDate(stats?.updated) : '-' }
-          </p>
+          <p>Last Updated: { stats ? friendlyDate( stats?.updated ) : '-' }</p>
         </div>
       </div>
 
-
+      <Container type="content" className="text-center home-start">
+        <h2>Still Getting Started?</h2>
+        <p>Run the following in your terminal!</p>
+        <pre>
+          <code>gatsby new [directory] https://github.com/colbyfayock/gatsby-starter-leaflet</code>
+        </pre>
+        <p className="note">Note: Gatsby CLI required globally for the above command</p>
+      </Container>
     </Layout>
   );
 };

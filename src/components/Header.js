@@ -7,24 +7,18 @@ const Header = () => {
   return (
     <header>
       <Container type="content">
-        <p>Daniel-Carlos Corona Dashboard 2020</p>
+        <p>My Gatsby Site</p>
         <ul>
           <li>
-            <Link style={{color:'white'}} to="/">[Home]</Link>
+            <Link to="/">Home</Link>
           </li>
           <li>
-          <Link style={{color:'white'}} to="/Cases-Charts/">[Corona Virus Cases Bar Graphs]</Link>
-          </li>
-            <li>
-          <Link style={{color:'white'}} to="/Info/">[!!!More Info!!!]</Link>
-          </li>
-              <li>
-          <Link style={{color:'white'}} to="/Cases-Charts/">[Corona Virus Cases Bar Graphs]</Link>
+            <Link to="/page-2/">Page 2</Link>
           </li>
         </ul>
       </Container>
-    </header> 
+    </header>
   );
-}; 
+};
 
 export default Header;

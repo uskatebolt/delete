@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Container = ({ children, className, type }) => {
-
-
   let containerClassName = 'container';
 
   if ( typeof type === 'string' ) {
@@ -20,7 +18,7 @@ const Container = ({ children, className, type }) => {
 Container.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
-  type: PropTypes.string
+  type: PropTypes.string,
 };
 
 export default Container;
